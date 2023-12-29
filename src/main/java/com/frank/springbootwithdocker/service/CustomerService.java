@@ -7,16 +7,20 @@ import com.frank.springbootwithdocker.exception.RequestValidationException;
 import com.frank.springbootwithdocker.exception.ResourceNotFoundException;
 import com.frank.springbootwithdocker.request.CustomerRegisterRequest;
 import com.frank.springbootwithdocker.request.CustomerUpdateRequest;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class CustomerService {
+
     private final CustomerDao customerDao;
+
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
 
     public void addCustomer (CustomerRegisterRequest customerRegisterRequest) {
         // check if email exists
@@ -38,31 +42,35 @@ public class CustomerService {
     }
 
     public CustomerDto findById(Integer customerId) {
-        return customerDao.findById(customerId);
+        return customerDao
+                .findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id: [%s] is not exist!".formatted(customerId)));
     }
 
     public CustomerDto updateCustomer(Integer customerId, CustomerUpdateRequest updateRequest) {
         boolean isChange = false;
-        CustomerDto foundCustomer = this.findById(customerId);
-        if (updateRequest.name() != null && !updateRequest.name().equals(foundCustomer.getName())) {
-            foundCustomer.setName(updateRequest.name());
+        CustomerDto customerDto = this.findById(customerId);
+        if (updateRequest.name() != null && !updateRequest.name().equals(customerDto.getName())) {
+            customerDto.setName(updateRequest.name());
             isChange = true;
         }
 
-        if (updateRequest.email() != null && !updateRequest.email().equals(foundCustomer.getEmail())) {
-            foundCustomer.setEmail(updateRequest.email());
+        if (updateRequest.email() != null && !updateRequest.email().equals(customerDto.getEmail())) {
+            customerDto.setEmail(updateRequest.email());
             isChange = true;
         }
 
-        if (updateRequest.age() != null && !updateRequest.age().equals(foundCustomer.getAge())) {
-            foundCustomer.setAge(updateRequest.age());
+        if (updateRequest.age() != null && !updateRequest.age().equals(customerDto.getAge())) {
+            customerDto.setAge(updateRequest.age());
             isChange = true;
         }
 
         if (!isChange) {
             throw new RequestValidationException("no data changes found!");
         }
-        return customerDao.updateCustomer(foundCustomer);
+
+        customerDao.updateCustomer(customerDto);
+        return customerDto;
     }
 
     private CustomerDto mapRequestToDTO(CustomerRegisterRequest customerRegisterRequest) {

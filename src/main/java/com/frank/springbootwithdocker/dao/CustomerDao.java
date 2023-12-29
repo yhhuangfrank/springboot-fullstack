@@ -3,6 +3,7 @@ package com.frank.springbootwithdocker.dao;
 import com.frank.springbootwithdocker.dto.CustomerDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerDao {
 
@@ -16,7 +17,7 @@ public interface CustomerDao {
 
     boolean existCustomerWithId(Integer customerId);
 
-    CustomerDto updateCustomer(CustomerDto customerDto);
+    void updateCustomer(CustomerDto customerDto);
 
-    CustomerDto findById(Integer customerId);
+    Optional<CustomerDto> findById(Integer customerId);
 }

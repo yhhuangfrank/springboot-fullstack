@@ -4,14 +4,14 @@ import com.frank.springbootwithdocker.converter.CustomerConverter;
 import com.frank.springbootwithdocker.dao.CustomerDao;
 import com.frank.springbootwithdocker.entity.Customer;
 import com.frank.springbootwithdocker.dto.CustomerDto;
-import com.frank.springbootwithdocker.exception.ResourceNotFoundException;
 import com.frank.springbootwithdocker.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
+@Repository("jpa")
 @RequiredArgsConstructor
 public class CustomerJpaDataAccessor implements CustomerDao {
     private final CustomerRepository customerRepository;
@@ -23,11 +23,10 @@ public class CustomerJpaDataAccessor implements CustomerDao {
     }
 
     @Override
-    public CustomerDto findById(Integer customerId) {
-        Customer customer = customerRepository
+    public Optional<CustomerDto> findById(Integer customerId) {
+        return customerRepository
                 .findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer with id: [%s] is not exist!".formatted(customerId)));
-        return customerConverter.toDTO(customer);
+                .map(customerConverter::toDTO);
     }
 
     @Override
@@ -52,10 +51,8 @@ public class CustomerJpaDataAccessor implements CustomerDao {
     }
 
     @Override
-    public CustomerDto updateCustomer(CustomerDto customerDto) {
-        Customer updatedCustomer = customerRepository.save(customerConverter.toEntity(customerDto));
-        return customerConverter.toDTO(updatedCustomer);
+    public void updateCustomer(CustomerDto customerDto) {
+        customerRepository.save(customerConverter.toEntity(customerDto));
     }
-
 
 }

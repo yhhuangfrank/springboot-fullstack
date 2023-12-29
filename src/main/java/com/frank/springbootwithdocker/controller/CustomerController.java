@@ -22,6 +22,11 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findAll());
     }
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<CustomerDto> findById(@PathVariable(name = "customerId") Integer customerId) {
+        return ResponseEntity.ok(customerService.findById(customerId));
+    }
+
     @PostMapping
     public ResponseEntity<String> checkCustomerWithEmail(
             @RequestBody CustomerRegisterRequest customerRegisterRequest
