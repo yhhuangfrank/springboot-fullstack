@@ -11,11 +11,11 @@ public interface CustomerDao {
 
     boolean existCustomerWithEmail(String email);
 
+    boolean existCustomerWithId(Integer customerId);
+
     void insertCustomer(CustomerDto customerDto);
 
     void deleteById(Integer customerId);
-
-    boolean existCustomerWithId(Integer customerId);
 
     void updateCustomer(CustomerDto customerDto);
 
