@@ -61,6 +61,5 @@ public abstract class BaseTestContainers {
                 postgreSQLContainer.getPassword()
         ).load();
         flyway.migrate();
-        System.out.println("==== canApplyDbMigrateWithFlyway finished ====");
     }
 }

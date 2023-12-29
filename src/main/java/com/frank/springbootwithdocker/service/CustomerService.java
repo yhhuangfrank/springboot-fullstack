@@ -30,7 +30,7 @@ public class CustomerService {
         customerDao.insertCustomer(this.mapRequestToDTO(customerRegisterRequest));
     }
 
-    public void deleteCustomerById(Integer customerId) {
+    public void deleteCustomerById(Long customerId) {
         if (!customerDao.existCustomerWithId(customerId)) {
             throw new ResourceNotFoundException("Customer with id: [%s] is not exist!".formatted(customerId));
         }
@@ -41,13 +41,13 @@ public class CustomerService {
         return customerDao.findAll();
     }
 
-    public CustomerDto findById(Integer customerId) {
+    public CustomerDto findById(Long customerId) {
         return customerDao
                 .findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer with id: [%s] is not exist!".formatted(customerId)));
     }
 
-    public CustomerDto updateCustomer(Integer customerId, CustomerUpdateRequest updateRequest) {
+    public CustomerDto updateCustomer(Long customerId, CustomerUpdateRequest updateRequest) {
         boolean isChange = false;
         CustomerDto customerDto = this.findById(customerId);
         if (updateRequest.name() != null && !updateRequest.name().equals(customerDto.getName())) {

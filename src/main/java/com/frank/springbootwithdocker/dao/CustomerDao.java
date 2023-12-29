@@ -11,13 +11,13 @@ public interface CustomerDao {
 
     boolean existCustomerWithEmail(String email);
 
-    boolean existCustomerWithId(Integer customerId);
+    boolean existCustomerWithId(Long customerId);
 
     void insertCustomer(CustomerDto customerDto);
 
-    void deleteById(Integer customerId);
+    void deleteById(Long customerId);
 
     void updateCustomer(CustomerDto customerDto);
 
-    Optional<CustomerDto> findById(Integer customerId);
+    Optional<CustomerDto> findById(Long customerId);
 }

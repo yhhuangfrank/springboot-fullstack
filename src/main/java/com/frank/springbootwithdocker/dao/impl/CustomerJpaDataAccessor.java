@@ -23,7 +23,7 @@ public class CustomerJpaDataAccessor implements CustomerDao {
     }
 
     @Override
-    public Optional<CustomerDto> findById(Integer customerId) {
+    public Optional<CustomerDto> findById(Long customerId) {
         return customerRepository
                 .findById(customerId)
                 .map(customerConverter::toDTO);
@@ -41,12 +41,12 @@ public class CustomerJpaDataAccessor implements CustomerDao {
     }
 
     @Override
-    public void deleteById(Integer customerId) {
+    public void deleteById(Long customerId) {
         customerRepository.deleteById(customerId);
     }
 
     @Override
-    public boolean existCustomerWithId(Integer customerId) {
+    public boolean existCustomerWithId(Long customerId) {
         return customerRepository.existsById(customerId);
     }
 

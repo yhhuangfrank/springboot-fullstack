@@ -75,16 +75,10 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
     @Test
     void insertCustomer() {
         // Given
-        String email = customerDto.getEmail();
         // When
         underTest.insertCustomer(customerDto);
         // Then
-        int customerId = underTest.findAll()
-                .stream()
-                .filter(c -> email.equals(c.getEmail()))
-                .findFirst()
-                .map(CustomerDto::getId)
-                .orElseThrow();
+        long customerId = getCustomerId();
         Optional<CustomerDto> actual = underTest.findById(customerId);
         assertThat(actual).isPresent().hasValueSatisfying(c -> {
             assertThat(c.getId()).isEqualTo(customerId);
@@ -107,12 +101,7 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
     void deleteById() {
         // Given
         underTest.insertCustomer(customerDto);
-        int customerId = underTest.findAll()
-                .stream()
-                .filter(c -> customerDto.getEmail().equals(c.getEmail()))
-                .findFirst()
-                .map(CustomerDto::getId)
-                .orElseThrow();
+        long customerId = getCustomerId();
         // When
         underTest.deleteById(customerId);
         // Then
@@ -124,13 +113,7 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
     void existCustomerWithId() {
         // Given
         underTest.insertCustomer(customerDto);
-        String email = customerDto.getEmail();
-        int customerId = underTest.findAll()
-                .stream()
-                .filter(c -> email.equals(c.getEmail()))
-                .findFirst()
-                .map(CustomerDto::getId)
-                .orElseThrow();
+        long customerId = getCustomerId();
         // When
         boolean actual = underTest.existCustomerWithId(customerId);
         // Then
@@ -144,12 +127,7 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
         String newEmail = "newEmail@example.com";
         int newAge = 100;
         underTest.insertCustomer(customerDto);
-        int customerId = underTest.findAll()
-                .stream()
-                .filter(c -> customerDto.getEmail().equals(c.getEmail()))
-                .findFirst()
-                .map(CustomerDto::getId)
-                .orElseThrow();
+        long customerId = getCustomerId();
         CustomerDto dbCustomer = underTest.findById(customerId).orElseThrow();
         CustomerDto newCustomer = CustomerDto.builder().id(dbCustomer.getId()).name(newName).email(newEmail).age(newAge).build();
         // When
@@ -168,12 +146,7 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
     void findById() {
         // Given
         underTest.insertCustomer(customerDto);
-        int customerId = underTest.findAll()
-                .stream()
-                .filter(c -> customerDto.getEmail().equals(c.getEmail()))
-                .findFirst()
-                .map(CustomerDto::getId)
-                .orElseThrow();
+        long customerId = getCustomerId();
         // When
         Optional<CustomerDto> actual = underTest.findById(customerId);
         // Then
@@ -188,10 +161,19 @@ class CustomerJdbcDataAccessorTest extends BaseTestContainers {
     @Test
     void findByWrongId() {
         // Given
-        int customerId = -1;
+        long customerId = -1;
         // When
         Optional<CustomerDto> actual = underTest.findById(customerId);
         // Then
         assertThat(actual).isEmpty();
+    }
+
+    private long getCustomerId() {
+        return underTest.findAll()
+                .stream()
+                .filter(c -> customerDto.getEmail().equals(c.getEmail()))
+                .findFirst()
+                .map(CustomerDto::getId)
+                .orElseThrow();
     }
 }

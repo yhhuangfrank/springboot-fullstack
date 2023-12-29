@@ -23,7 +23,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> findById(@PathVariable(name = "customerId") Integer customerId) {
+    public ResponseEntity<CustomerDto> findById(@PathVariable(name = "customerId") Long customerId) {
         return ResponseEntity.ok(customerService.findById(customerId));
     }
 
@@ -37,7 +37,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     public ResponseEntity<CustomerDto> updateCustomerById(
-            @PathVariable(name = "customerId") Integer customerId,
+            @PathVariable(name = "customerId") Long customerId,
             @RequestBody CustomerUpdateRequest customerUpdateRequest
     ) {
         CustomerDto updatedCustomer = customerService.updateCustomer(customerId, customerUpdateRequest);
@@ -46,7 +46,7 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}")
     public ResponseEntity<String> deleteCustomerById(
-            @PathVariable(name = "customerId") Integer customerId
+            @PathVariable(name = "customerId") Long customerId
     ) {
         customerService.deleteCustomerById(customerId);
         return ResponseEntity.ok("deleted");

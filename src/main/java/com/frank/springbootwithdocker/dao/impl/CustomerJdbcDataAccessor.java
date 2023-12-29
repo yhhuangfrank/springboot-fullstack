@@ -50,7 +50,7 @@ public class CustomerJdbcDataAccessor implements CustomerDao {
     }
 
     @Override
-    public void deleteById(Integer customerId) {
+    public void deleteById(Long customerId) {
         String sql = """
                 DELETE FROM customer
                 WHERE id = ?;
@@ -59,7 +59,7 @@ public class CustomerJdbcDataAccessor implements CustomerDao {
     }
 
     @Override
-    public boolean existCustomerWithId(Integer customerId) {
+    public boolean existCustomerWithId(Long customerId) {
         String sql = """
                 SELECT COUNT(id)
                 FROM customer
@@ -80,7 +80,7 @@ public class CustomerJdbcDataAccessor implements CustomerDao {
     }
 
     @Override
-    public Optional<CustomerDto> findById(Integer customerId) {
+    public Optional<CustomerDto> findById(Long customerId) {
         String sql = """
                 SELECT id, name, email, age
                 FROM customer
