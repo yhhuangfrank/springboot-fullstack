@@ -6,7 +6,6 @@ import com.frank.springbootwithdocker.dto.CustomerDto;
 import com.frank.springbootwithdocker.entity.Customer;
 import com.frank.springbootwithdocker.rowmapper.CustomerRowMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,12 +36,7 @@ public class CustomerJdbcDataAccessor implements CustomerDao {
                 FROM customer
                 WHERE email = ?
                 """;
-        Integer count;
-        try {
-            count = jdbcTemplate.queryForObject(sql, Integer.class, email);
-        } catch (DataAccessException e) {
-            count = 0;
-        }
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
 
@@ -71,12 +65,7 @@ public class CustomerJdbcDataAccessor implements CustomerDao {
                 FROM customer
                 WHERE id = ?;
                 """;
-        Integer count;
-        try {
-            count = jdbcTemplate.queryForObject(sql, Integer.class, customerId);
-        } catch (DataAccessException e) {
-            count = 0;
-        }
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, customerId);
         return count != null && count > 0;
     }
 
