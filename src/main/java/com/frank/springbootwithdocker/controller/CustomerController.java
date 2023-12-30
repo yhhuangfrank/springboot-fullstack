@@ -19,12 +19,12 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<List<CustomerDto>> findAll() {
-        return ResponseEntity.ok(customerService.findAll());
+        return ResponseEntity.ok(customerService.findAllCustomers());
     }
 
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDto> findById(@PathVariable(name = "customerId") Long customerId) {
-        return ResponseEntity.ok(customerService.findById(customerId));
+        return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
 
     @PostMapping

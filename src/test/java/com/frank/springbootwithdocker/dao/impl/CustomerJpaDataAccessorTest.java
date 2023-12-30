@@ -42,11 +42,11 @@ class CustomerJpaDataAccessorTest {
     @Test
     void findById() {
         // Given
-        long id = 1;
+        long customerId = 1;
         // When
-        underTest.findById(id);
+        underTest.findById(customerId);
         // Then
-        verify(customerRepository).findById(id);
+        verify(customerRepository).findById(customerId);
     }
 
     @Test
@@ -73,21 +73,21 @@ class CustomerJpaDataAccessorTest {
     @Test
     void deleteById() {
         // Given
-        long id = 1;
+        long customerId = 1;
         // When
-        underTest.deleteById(id);
+        underTest.deleteById(customerId);
         // Then
-        verify(customerRepository).deleteById(id);
+        verify(customerRepository).deleteById(customerId);
     }
 
     @Test
     void existCustomerWithId() {
         // Given
-        long id = 1;
+        long customerId = 1;
         // When
-        underTest.existCustomerWithId(id);
+        underTest.existCustomerWithId(customerId);
         // Then
-        verify(customerRepository).existsById(id);
+        verify(customerRepository).existsById(customerId);
     }
 
     @Test

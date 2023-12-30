@@ -37,11 +37,11 @@ public class CustomerService {
         customerDao.deleteById(customerId);
     }
 
-    public List<CustomerDto> findAll() {
+    public List<CustomerDto> findAllCustomers() {
         return customerDao.findAll();
     }
 
-    public CustomerDto findById(Long customerId) {
+    public CustomerDto findCustomerById(Long customerId) {
         return customerDao
                 .findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer with id: [%s] is not exist!".formatted(customerId)));
@@ -49,13 +49,16 @@ public class CustomerService {
 
     public CustomerDto updateCustomer(Long customerId, CustomerUpdateRequest updateRequest) {
         boolean isChange = false;
-        CustomerDto customerDto = this.findById(customerId);
+        CustomerDto customerDto = this.findCustomerById(customerId);
         if (updateRequest.name() != null && !updateRequest.name().equals(customerDto.getName())) {
             customerDto.setName(updateRequest.name());
             isChange = true;
         }
 
         if (updateRequest.email() != null && !updateRequest.email().equals(customerDto.getEmail())) {
+            if (customerDao.existCustomerWithEmail(updateRequest.email())) {
+                throw new DuplicateResourceException("Customer with current email already exist!");
+            }
             customerDto.setEmail(updateRequest.email());
             isChange = true;
         }
