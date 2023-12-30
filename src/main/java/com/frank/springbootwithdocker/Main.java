@@ -22,6 +22,7 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        customerRepository.deleteAllInBatch();
         Faker faker = new Faker();
         Random random = new Random();
         String lastName = faker.name().lastName();
