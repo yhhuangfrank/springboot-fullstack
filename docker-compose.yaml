@@ -29,7 +29,22 @@ services:
     restart: unless-stopped
     depends_on:
       - db
-
+# 使用自訂鏡像
+  frank-api:
+    container_name: frank-api
+    image: yhhuangfrank/frank-api
+    environment:
+      # 環境參數配置
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
+    ports:
+      - "8081:8080"
+    networks:
+      - postgres
+    restart: unless-stopped
+    depends_on:
+      - db # 當 db service 運行起來後才會運行此服務
+#    command: # 啟動時加入此指令，最終效果與 environment 配置相同
+#      - --spring.datasource.url=jdbc:postgresql://db:5432/customer
 networks:
   postgres:
     driver: bridge

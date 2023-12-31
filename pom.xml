@@ -19,7 +19,7 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <docker.username>yhhuangfrank</docker.username>
         <docker.image.name>frank-api</docker.image.name>
-        <docker.image.tag/>
+        <jib.version>3.3.1</jib.version>
     </properties>
 
     <dependencies>
@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${jib.version}</version>
                 <configuration>
                     <from>
                         <image>eclipse-temurin:17</image>
