@@ -1,0 +1,39 @@
+name: CI - Build Backend
+
+#    任何對 backend folder 修改時觸發 actions
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/**
+defaults:
+  run:
+    working-directory: ./backend
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: frank
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: customer
+        ports:
+          - 5432:5432
+          # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+      - name: Build and Unit/Integration tests with Maven
+        run: mvn -ntp -B verify
