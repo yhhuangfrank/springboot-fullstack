@@ -9,7 +9,7 @@ on:
       - backend/**
 defaults:
   run:
-    working-directory: ./backend
+    working-directory: ./backend # 定義預設路徑
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,4 +36,4 @@ jobs:
           java-version: '17'
           cache: 'maven'
       - name: Build and Unit/Integration tests with Maven
-        run: mvn -ntp -B verify
+        run: mvn -ntp -B verify # -ntp下載或上傳時不顯示傳送進度，並且 -B 使用非互動式模式
